@@ -2,6 +2,7 @@
 
 #include "fields.h"
 
+#include <algorithm>
 #include <array>
 
 /*
@@ -17,10 +18,10 @@
 
 constexpr size_t new_order_bitfield_num()
 {
-    return 0
+    return std::max({0
 #define FIELD(_, n, __) , n
 #include "new_order_opt_fields.inl"
-        ;
+        });
 }
 
 constexpr size_t new_order_opt_fields_size()

@@ -24,6 +24,7 @@ uint8_t encode_request_type(const RequestType type)
         case RequestType::New:
             return 0x38;
     }
+    return 0;
 }
 
 unsigned char * add_request_header(unsigned char * start, unsigned length, const RequestType type, unsigned seq_no)
@@ -42,6 +43,7 @@ char convert_side(const Side side)
         case Side::Buy: return '1';
         case Side::Sell: return '2';
     }
+    return 0;
 }
 
 char convert_ord_type(const OrdType ord_type)
@@ -51,6 +53,7 @@ char convert_ord_type(const OrdType ord_type)
         case OrdType::Limit: return '2';
         case OrdType::Pegged: return 'P';
     }
+    return 0;
 }
 
 char convert_time_in_force(const TimeInForce time_in_force)
@@ -60,6 +63,7 @@ char convert_time_in_force(const TimeInForce time_in_force)
         case TimeInForce::IOC: return '3';
         case TimeInForce::GTD: return '6';
     }
+    return 0;
 }
 
 char convert_capacity(const Capacity capacity)
@@ -69,6 +73,7 @@ char convert_capacity(const Capacity capacity)
         case Capacity::Principal: return 'P';
         case Capacity::RisklessPrincipal: return 'R';
     }
+    return 0;
 }
 
 } // anonymous namespace
