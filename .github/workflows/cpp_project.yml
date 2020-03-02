@@ -1,4 +1,4 @@
-name: BOE New Order CI
+name: BOE Trade Capture Report CI
 
 on: [push]
 
