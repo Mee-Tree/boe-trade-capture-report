@@ -1,4 +1,4 @@
-![BOE New Order CI](https://github.com/itiviti-cpp-master/boe-new-order/workflows/BOE%20New%20Order%20CI/badge.svg)
+![BOE Trade Capture Report CI](https://github.com/itiviti-cpp-master/boe-trade-capture-report/workflows/BOE%20Trade%20Capture%20Report%20CI/badge.svg)
 # BOE NewOrder simple encoder
 NewOrder message encoder for CBOE BOE protocol.
 
