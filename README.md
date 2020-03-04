@@ -1,5 +1,44 @@
 ![BOE Trade Capture Report CI](https://github.com/itiviti-cpp-master/boe-trade-capture-report/workflows/BOE%20Trade%20Capture%20Report%20CI/badge.svg)
-# BOE NewOrder simple encoder
-NewOrder message encoder for CBOE BOE protocol.
+# Кодирование сообщения TradeCaptureReport
+## Идея
+Помимо обычных заказов некоторые биржи позволяют посылать заявку на сделку, стороны которой договорились о ней вне биржи.
+Такие заявки иногда называют ex-pit или trade report. Биржа проверяет детали сделки и если в них нет ошибок, то сделка
+регистрируется.
 
-See [protocol specifications](doc/BATS_Europe_BOE2_Specification.pdf)
+Существуют разные виды реализации таких заявок:
+* каждая сторона отправляет на биржу свою часть информации, тогда одна сторона выступает инициатором, а вторая - реактором и должна
+  послать свою часть в ответ на уведомление с биржи о получении части инициатора
+* инициатор отправляет полную информацию о сделке, но реактор получает уведомление об этом и должен подтвердить своё участие
+* инициатор отправляет полную информацию о сделке, а реактор получает уведомление лишь об успешной регистрации сделки
+
+Бывает, что на обеих сторонах сделки находится один и тот же участник биржи. Это требуется, когда, например, банк регистрирует на
+бирже сделку между своими клиентами, выступая на обеих сторонах сделки от их имени.
+
+В протоколе BOE предусмотрен запрос TradeCaptureReport для отправки заявки на экспит.
+
+## Задача
+Требуется реализовать кодировщик сообщения TradeCaptureReport (см. [protocol specifications](files/doc/BATS_Europe_BOE2_Specification.pdf)) имеющий следующий интерфейс:
+```cpp
+std::vector<unsigned char> create_trade_capture_report_request(
+  unsigned seq_no,
+  const std::string & trade_report_id,
+  double volume,
+  double price,
+  const std::string & party_id,
+  Side side,
+  Capacity capacity,
+  const std::string & contra_party_id,
+  Side contra_side,
+  Capacity contra_capacity,
+  const std::string & symbol,
+  bool deferred_publication
+);
+```
+
+Важно проставить правильное значение поля PartyRole:
+* EnteringFirm для "нашей" стороны
+* ContraFirm для "другой" стороны
+
+Обратите внимание, что поле LastPx имеет тип TradePrice, который отличается от обычного BinaryPrice.
+
+Требуется предусмотреть возможность относительно лёгкого изменения списка используемых полей сообщения.
