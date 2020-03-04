@@ -6,7 +6,7 @@ set(PROJECT_NAME boe_trade_capture_report)
 project(${PROJECT_NAME})
 
 # Set up the compiler flags
-set(CMAKE_CXX_FLAGS "-g -Wall -Wextra -Werror -pedantic -pedantic-errors")
+set(CMAKE_CXX_FLAGS "-g -Wall -Wextra -Werror")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -42,6 +42,7 @@ file(GLOB TEST_SRC_FILES ${PROJECT_SOURCE_DIR}/test/*.cpp)
 
 # Unit tests
 add_executable(runUnitTests ${TEST_SRC_FILES})
+target_compile_options(runUnitTests PRIVATE -pedantic -pedantic-errors)
 
 # Standard linking to gtest stuff
 target_link_libraries(runUnitTests gtest gtest_main)
