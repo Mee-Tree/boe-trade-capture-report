@@ -60,8 +60,9 @@ if (CMAKE_BUILD_TYPE MATCHES MSAN)
 endif()
 if (CMAKE_BUILD_TYPE MATCHES USAN)
     target_compile_options(runUnitTests PRIVATE
-        -fsanitize=undefined,float-divide-by-zero,implicit-conversion
-        -fno-omit-frame-pointer
-        -fno-sanitize-recover=bool,builtin,bounds,enum,float-cast-overflow,float-divide-by-zero,implicit-conversion,function,null,object-size,pointer-overflow,return,shift,signed-integer-overflow,unreachable,vla-bound,vptr)
-    target_link_options(runUnitTests PRIVATE -fsanitize=undefined,float-divide-by-zero,implicit-conversion)
+        -fsanitize=undefined,float-cast-overflow,float-divide-by-zero,bounds-strict
+        -fno-omit-frame-pointer -fno-sanitize-recover
+        -fsanitize-recover=alignment)
+    target_link_options(runUnitTests PRIVATE
+        -fsanitize=undefined,float-cast-overflow,float-divide-by-zero,bounds-strict)
 endif()
