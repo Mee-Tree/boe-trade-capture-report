@@ -6,7 +6,7 @@ set(PROJECT_NAME boe_trade_capture_report)
 project(${PROJECT_NAME})
 
 # Set up the compiler flags
-set(CMAKE_CXX_FLAGS "-g -Wall -Wextra -Werror")
+set(CMAKE_CXX_FLAGS "-g -Wall -Wextra -Werror -pedantic -pedantic-errors")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -51,12 +51,16 @@ target_link_libraries(runUnitTests boe_trade_capture_report_lib)
 
 # Sanitizers modes
 if (CMAKE_BUILD_TYPE MATCHES ASAN)
-    target_compile_options(runUnitTests PRIVATE -fsanitize=address -fno-omit-frame-pointer -fno-sanitize-recover)
+    target_compile_options(runUnitTests PRIVATE -fsanitize=address
+        -fno-omit-frame-pointer -fno-sanitize-recover)
     target_link_options(runUnitTests PRIVATE -fsanitize=address)
 endif()
 if (CMAKE_BUILD_TYPE MATCHES MSAN)
-    target_compile_options(runUnitTests PRIVATE -fsanitize=memory -fno-omit-frame-pointer -fsanitize-memory-track-origins=2 -fno-sanitize-recover)
-    target_link_options(runUnitTests PRIVATE -fsanitize=memory -fsanitize-memory-track-origins=2)
+    target_compile_options(runUnitTests PRIVATE -fsanitize=memory
+        -fno-omit-frame-pointer -fsanitize-memory-track-origins=2
+        -fno-sanitize-recover)
+    target_link_options(runUnitTests PRIVATE -fsanitize=memory
+        -fsanitize-memory-track-origins=2)
 endif()
 if (CMAKE_BUILD_TYPE MATCHES USAN)
     target_compile_options(runUnitTests PRIVATE
