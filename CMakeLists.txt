@@ -59,6 +59,9 @@ if (CMAKE_BUILD_TYPE MATCHES MSAN)
     target_link_options(runUnitTests PRIVATE -fsanitize=memory -fsanitize-memory-track-origins=2)
 endif()
 if (CMAKE_BUILD_TYPE MATCHES USAN)
-    target_compile_options(runUnitTests PRIVATE -fsanitize=undefined -fno-omit-frame-pointer -fno-sanitize-recover)
-    target_link_options(runUnitTests PRIVATE -fsanitize=undefined)
+    target_compile_options(runUnitTests PRIVATE
+        -fsanitize=undefined,float-divide-by-zero,implicit-conversion
+        -fno-omit-frame-pointer
+        -fno-sanitize-recover=bool,builtin,bounds,enum,float-cast-overflow,float-divide-by-zero,implicit-conversion,function,null,object-size,pointer-overflow,return,shift,signed-integer-overflow,unreachable,vla-bound,vptr)
+    target_link_options(runUnitTests PRIVATE -fsanitize=undefined,float-divide-by-zero,implicit-conversion)
 endif()
