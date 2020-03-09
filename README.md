@@ -1,4 +1,3 @@
-![BOE Trade Capture Report CI](https://github.com/itiviti-cpp-master/boe-trade-capture-report/workflows/BOE%20Trade%20Capture%20Report%20CI/badge.svg)
 # Кодирование сообщения TradeCaptureReport
 ## Идея
 Помимо обычных заказов некоторые биржи позволяют посылать заявку на сделку, стороны которой договорились о ней вне биржи.
@@ -17,7 +16,7 @@
 В протоколе BOE предусмотрен запрос TradeCaptureReport для отправки заявки на экспит.
 
 ## Задача
-Требуется реализовать кодировщик сообщения TradeCaptureReport (см. [protocol specifications](files/doc/BATS_Europe_BOE2_Specification.pdf)) имеющий следующий интерфейс:
+Требуется реализовать кодировщик сообщения TradeCaptureReport (см. [protocol specifications](doc/BATS_Europe_BOE2_Specification.pdf)) имеющий следующий интерфейс:
 ```cpp
 std::vector<unsigned char> create_trade_capture_report_request(
   unsigned seq_no,
