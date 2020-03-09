@@ -53,21 +53,21 @@ target_link_libraries(runUnitTests boe_trade_capture_report_lib)
 # Sanitizers modes
 if (CMAKE_BUILD_TYPE MATCHES ASAN)
     target_compile_options(runUnitTests PRIVATE -fsanitize=address
-        -fno-omit-frame-pointer -fno-sanitize-recover)
+        -fno-omit-frame-pointer -fno-sanitize-recover=all)
     target_link_options(runUnitTests PRIVATE -fsanitize=address)
 endif()
 if (CMAKE_BUILD_TYPE MATCHES MSAN)
     target_compile_options(runUnitTests PRIVATE -fsanitize=memory
         -fno-omit-frame-pointer -fsanitize-memory-track-origins=2
-        -fno-sanitize-recover)
+        -fno-sanitize-recover=all)
     target_link_options(runUnitTests PRIVATE -fsanitize=memory
         -fsanitize-memory-track-origins=2)
 endif()
 if (CMAKE_BUILD_TYPE MATCHES USAN)
     target_compile_options(runUnitTests PRIVATE
-        -fsanitize=undefined,float-cast-overflow,float-divide-by-zero,bounds-strict
-        -fno-omit-frame-pointer -fno-sanitize-recover
+        -fsanitize=undefined,float-cast-overflow,float-divide-by-zero
+        -fno-omit-frame-pointer -fno-sanitize-recover=all
         -fsanitize-recover=alignment)
     target_link_options(runUnitTests PRIVATE
-        -fsanitize=undefined,float-cast-overflow,float-divide-by-zero,bounds-strict)
+        -fsanitize=undefined,float-cast-overflow,float-divide-by-zero)
 endif()

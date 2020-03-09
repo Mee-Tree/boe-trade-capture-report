@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <array>
+#include <vector>
 
 /*
  * New Order
@@ -80,3 +81,15 @@ std::array<unsigned char, calculate_size(RequestType::New)> create_new_order_req
         Capacity capacity,
         const std::string & account);
 
+std::vector<unsigned char> create_trade_capture_report_request(
+        unsigned seq_no,
+        const std::string & trade_report_id,
+        double volume,
+        double price,
+        const std::string & party_id,
+        Side side,
+        Capacity capacity,
+        const std::string & contra_party_id,
+        Capacity contra_capacity,
+        const std::string & symbol,
+        bool deferred_publication);

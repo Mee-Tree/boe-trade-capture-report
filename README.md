@@ -28,17 +28,33 @@ std::vector<unsigned char> create_trade_capture_report_request(
   Side side,
   Capacity capacity,
   const std::string & contra_party_id,
-  Side contra_side,
   Capacity contra_capacity,
   const std::string & symbol,
   bool deferred_publication
 );
 ```
 
+Отображение полей (аргумент функции -> поле протокола):
+* seq_no -> SequenceNumber
+* trade_report_id -> TradeReportID
+* volume -> LastShares
+* price -> LastPx
+* party_id -> PartyID [наша сторона]
+* side -> Side [наша сторона]
+* capacity -> Capacity [наша сторона]
+* contra_party_id -> PartyID [другая сторона]
+* contra_capacity -> Capacity [другая сторона]
+* symbol -> Symbol
+* deferred_publication -> TradePublishIndicator (false -> "Publish trade", true -> "Deferred publication")
+
 Важно проставить правильное значение поля PartyRole:
 * EnteringFirm для "нашей" стороны
 * ContraFirm для "другой" стороны
 
-Обратите внимание, что поле LastPx имеет тип TradePrice, который отличается от обычного BinaryPrice.
-
 Требуется предусмотреть возможность относительно лёгкого изменения списка используемых полей сообщения.
+
+Полный список используемых в этом задании опциональных полей сообщения TradeCaptureReport:
+* Symbol
+* Capacity
+* PartyRole
+* TradePublishIndicator

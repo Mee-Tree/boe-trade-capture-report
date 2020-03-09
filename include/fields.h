@@ -24,7 +24,7 @@ inline unsigned char * encode_text(unsigned char * start, const std::string & st
 
 inline unsigned char * encode_char(unsigned char * start, const char ch)
 {
-    return encode(start, static_cast<const uint8_t>(ch));
+    return encode(start, static_cast<uint8_t>(ch));
 }
 
 inline unsigned char * encode_binary4(unsigned char * start, const uint32_t value)

@@ -109,3 +109,30 @@ std::array<unsigned char, calculate_size(RequestType::New)> create_new_order_req
     return msg;
 }
 
+std::vector<unsigned char> create_trade_capture_report_request(
+        unsigned seq_no,
+        const std::string & trade_report_id,
+        double volume,
+        double price,
+        const std::string & party_id,
+        Side side,
+        Capacity capacity,
+        const std::string & contra_party_id,
+        Capacity contra_capacity,
+        const std::string & symbol,
+        bool deferred_publication)
+{
+    return std::vector<unsigned char>(
+        sizeof(seq_no) +
+            sizeof(trade_report_id) +
+            sizeof(volume) +
+            sizeof(price) +
+            sizeof(party_id) +
+            sizeof(side) +
+            sizeof(capacity) +
+            sizeof(contra_party_id) +
+            sizeof(contra_capacity) +
+            sizeof(symbol) +
+            sizeof(deferred_publication)
+    );
+}
