@@ -16,7 +16,7 @@ TEST(TradeCaptureReportTest, size)
             Capacity::Agency,
             "STUd",
             false);
-    EXPECT_EQ(69, msg.size());
+    EXPECT_EQ(70, msg.size());
 }
 
 TEST(TradeCaptureReportTest, simple)
