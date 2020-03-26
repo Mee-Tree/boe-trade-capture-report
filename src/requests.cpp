@@ -136,7 +136,7 @@ std::vector<unsigned char> create_trade_capture_report_request(
         bool deferred_publication)
 {
     std::vector<unsigned char> msg(calculate_size(RequestType::TradeCapture));
-    /*auto * p = add_request_header(&msg[0], msg.size() - 2, RequestType::TradeCapture, seq_no);
+    auto * p = add_request_header(&msg[0], msg.size() - 2, RequestType::TradeCapture, seq_no);
     p = encode_text(p, trade_report_id, 20);
     p = encode_binary4(p, static_cast<uint32_t>(volume));
     p = encode_price(p, price);
@@ -153,6 +153,5 @@ std::vector<unsigned char> create_trade_capture_report_request(
     encode_trade_capture_opt_fields(p,
             symbol,
             deferred_publication ? '2' : '1');
-    */
     return msg;
 }
