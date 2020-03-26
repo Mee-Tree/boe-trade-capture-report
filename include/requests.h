@@ -34,7 +34,8 @@ constexpr size_t new_order_opt_fields_size()
 }
 
 enum class RequestType {
-    New
+    New,
+    TradeCapture
 };
 
 constexpr size_t calculate_size(const RequestType type)
@@ -42,6 +43,8 @@ constexpr size_t calculate_size(const RequestType type)
     switch (type) {
         case RequestType::New:
             return 36 + new_order_bitfield_num() + new_order_opt_fields_size();
+        case RequestType::TradeCapture:
+            return 43 + new_order_bitfield_num() + new_order_opt_fields_size();
     }
 }
 

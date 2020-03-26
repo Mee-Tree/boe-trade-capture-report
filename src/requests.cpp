@@ -18,11 +18,24 @@ void encode_new_order_opt_fields(unsigned char * bitfield_start,
 #include "new_order_opt_fields.inl"
 }
 
+void encode_trade_capture_opt_fields(unsigned char * bitfield_start,
+        const std::string & symbol,
+        const bool trade_publish_ind)
+{
+    auto * p = bitfield_start + new_order_bitfield_num();
+#define FIELD(name, bitfield_num, bit) \
+    set_opt_field_bit(bitfield_start, bitfield_num, bit); \
+    p = encode_field_##name(p, name);
+#include "new_order_opt_fields.inl"
+}
+
 uint8_t encode_request_type(const RequestType type)
 {
     switch (type) {
         case RequestType::New:
             return 0x38;
+        case RequestType::TradeCapture:
+            return 0x3C;
     }
     return 0;
 }
@@ -76,6 +89,8 @@ char convert_capacity(const Capacity capacity)
     return 0;
 }
 
+//char convert_party_role(const role){ return 0;}
+
 } // anonymous namespace
 
 std::array<unsigned char, calculate_size(RequestType::New)> create_new_order_request(const unsigned seq_no,
@@ -122,6 +137,23 @@ std::vector<unsigned char> create_trade_capture_report_request(
         const std::string & symbol,
         bool deferred_publication)
 {
+//    static_assert(calculate_size(RequestType::New) == 78, "Wrong New Order message size");
+
+    std::vector<unsigned char> msg(calculate_size(RequestType::TradeCapture));
+    auto * p = add_request_header(&msg[0], msg.size() - 2, RequestType::TradeCapture, seq_no);
+    p = encode_text(p, trade_report_id, 20);
+    p = encode_binary4(p, static_cast<uint32_t>(volume));
+    p = encode_price(p, price);
+    p = encode(p, static_cast<uint8_t>(new_order_bitfield_num()));
+    p = encode(p, static_cast<uint8_t>(2));
+    p = encode_char(p, convert_side(side));
+    p = encode_char(p, convert_capacity(capacity));
+//    p = encode_char(p, "TEST");
+//    p =
+    encode_trade_capture_opt_fields(p,
+            symbol,
+            deferred_publication);
+    return msg;
     return std::vector<unsigned char>(
         sizeof(seq_no) +
             sizeof(trade_report_id) +
