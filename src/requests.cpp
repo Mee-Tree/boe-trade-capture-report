@@ -18,16 +18,16 @@ void encode_new_order_opt_fields(unsigned char * bitfield_start,
 #include "new_order_opt_fields.inl"
 }
 
-void encode_trade_capture_opt_fields(unsigned char * bitfield_start,
-        const std::string & symbol,
-        const bool trade_publish_ind)
-{
-    auto * p = bitfield_start + new_order_bitfield_num();
-#define FIELD(name, bitfield_num, bit) \
-    set_opt_field_bit(bitfield_start, bitfield_num, bit); \
-    p = encode_field_##name(p, name);
-#include "new_order_opt_fields.inl"
-}
+//void encode_trade_capture_opt_fields(unsigned char * bitfield_start,
+//        const std::string & symbol,
+//        const bool trade_publish_ind)
+//{
+//    auto * p = bitfield_start + new_order_bitfield_num();
+//#define FIELD(name, bitfield_num, bit) \
+//    set_opt_field_bit(bitfield_start, bitfield_num, bit); \
+//    p = encode_field_##name(p, name);
+//#include "new_order_opt_fields.inl"
+//}
 
 uint8_t encode_request_type(const RequestType type)
 {
@@ -150,9 +150,9 @@ std::vector<unsigned char> create_trade_capture_report_request(
     p = encode_char(p, convert_capacity(capacity));
 //    p = encode_char(p, "TEST");
 //    p =
-    encode_trade_capture_opt_fields(p,
-            symbol,
-            deferred_publication);
+//    encode_trade_capture_opt_fields(p,
+//            symbol,
+//            deferred_publication);
     return msg;
     return std::vector<unsigned char>(
         sizeof(seq_no) +
