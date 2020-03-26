@@ -60,7 +60,7 @@ constexpr size_t calculate_size(const RequestType type)
         case RequestType::New:
             return 36 + new_order_bitfield_num() + new_order_opt_fields_size();
         case RequestType::TradeCapture:
-            return 43 + new_order_bitfield_num() + new_order_opt_fields_size();
+            return 43 + trade_capture_bitfield_num() + trade_capture_opt_fields_size();
     }
     return 0;
 }
