@@ -46,6 +46,7 @@ constexpr size_t calculate_size(const RequestType type)
         case RequestType::TradeCapture:
             return 43 + new_order_bitfield_num() + new_order_opt_fields_size();
     }
+    return 0;
 }
 
 enum class Side {
