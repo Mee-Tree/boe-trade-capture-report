@@ -18,17 +18,6 @@ void encode_new_order_opt_fields(unsigned char * bitfield_start,
 #include "new_order_opt_fields.inl"
 }
 
-//void encode_trade_capture_opt_fields(unsigned char * bitfield_start,
-//        const std::string & symbol,
-//        const bool trade_publish_ind)
-//{
-//    auto * p = bitfield_start + new_order_bitfield_num();
-//#define FIELD(name, bitfield_num, bit) \
-//    set_opt_field_bit(bitfield_start, bitfield_num, bit); \
-//    p = encode_field_##name(p, name);
-//#include "new_order_opt_fields.inl"
-//}
-
 uint8_t encode_request_type(const RequestType type)
 {
     switch (type) {
