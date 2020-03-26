@@ -25,11 +25,27 @@ constexpr size_t new_order_bitfield_num()
         });
 }
 
+constexpr size_t trade_capture_bitfield_num()
+{
+    return std::max({0
+ #define FIELD(_, n, __) , n
+ #include "trade_capture_opt_fields.inl"
+         });
+}
+
 constexpr size_t new_order_opt_fields_size()
 {
     return 0
 #define FIELD(name, _, __) + name##_field_size
 #include "new_order_opt_fields.inl"
+        ;
+}
+
+constexpr size_t trade_capture_opt_fields_size()
+{
+    return 0
+#define FIELD(name, _, __) + name##_field_size
+#include "trade_capture_opt_fields.inl"
         ;
 }
 
@@ -46,6 +62,7 @@ constexpr size_t calculate_size(const RequestType type)
         case RequestType::TradeCapture:
             return 43 + new_order_bitfield_num() + new_order_opt_fields_size();
     }
+    return 0;
 }
 
 enum class Side {

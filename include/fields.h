@@ -67,4 +67,3 @@ inline void set_opt_field_bit(unsigned char * bitfield_start, unsigned bitfield_
 {
     *(bitfield_start + bitfield_num - 1) |= bit;
 }
-

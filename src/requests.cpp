@@ -133,7 +133,7 @@ std::vector<unsigned char> create_trade_capture_report_request(
     p = encode_text(p, trade_report_id, 20);
     p = encode_binary4(p, static_cast<uint32_t>(volume));
     p = encode_price(p, price);
-    p = encode(p, static_cast<uint8_t>(new_order_bitfield_num()));
+    p = encode(p, static_cast<uint8_t>(trade_capture_bitfield_num()));
     p = encode(p, static_cast<uint8_t>(2));
     p = encode_char(p, convert_side(side));
     p = encode_char(p, convert_capacity(capacity));
