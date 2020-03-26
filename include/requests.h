@@ -25,20 +25,29 @@ constexpr size_t new_order_bitfield_num()
         });
 }
 
-constexpr size_t trade_capture_bitfield_num()
-{
-    return std::max({0
- #define FIELD(_, n, __) , n
- #include "trade_capture_opt_fields.inl"
-         });
-}
-
 constexpr size_t new_order_opt_fields_size()
 {
     return 0
 #define FIELD(name, _, __) + name##_field_size
 #include "new_order_opt_fields.inl"
         ;
+}
+
+/*
+ * TradeCapture
+ *  Symbol(1,1)
+ *  Capacity(2,1)
+ *  Account(2,2)
+ *  PartyRole(2,16)
+ *  TradePublishIndicator(3,32)
+ */
+
+constexpr size_t trade_capture_bitfield_num()
+{
+    return std::max({0
+ #define FIELD(_, n, __) , n
+ #include "trade_capture_opt_fields.inl"
+         });
 }
 
 constexpr size_t trade_capture_opt_fields_size()

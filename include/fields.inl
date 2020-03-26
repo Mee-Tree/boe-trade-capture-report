@@ -10,9 +10,9 @@ FIELD(order_qty, binary4, unsigned)
 FIELD(ord_type, char, char)
 FIELD(price, price, double)
 FIELD(side, char, char)
-VAR_FIELD(trade_publish_ind, 1)
 VAR_FIELD(symbol, 8)
 FIELD(time_in_force, char, char)
+FIELD(trade_publish_ind, char, char)
 
 #undef FIELD
 #undef VAR_FIELD

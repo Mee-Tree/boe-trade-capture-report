@@ -20,7 +20,7 @@ void encode_new_order_opt_fields(unsigned char * bitfield_start,
 
 void encode_trade_capture_opt_fields(unsigned char * bitfield_start,
         const std::string & symbol,
-        const bool trade_publish_ind)
+        const char trade_publish_ind)
 {
     auto * p = bitfield_start + trade_capture_bitfield_num();
 #define FIELD(name, bitfield_num, bit) \
@@ -89,8 +89,6 @@ char convert_capacity(const Capacity capacity)
     return 0;
 }
 
-//char convert_party_role(const role){ return 0;}
-
 } // anonymous namespace
 
 std::array<unsigned char, calculate_size(RequestType::New)> create_new_order_request(const unsigned seq_no,
@@ -137,8 +135,6 @@ std::vector<unsigned char> create_trade_capture_report_request(
         const std::string & symbol,
         bool deferred_publication)
 {
-//    static_assert(calculate_size(RequestType::New) == 78, "Wrong New Order message size");
-
     std::vector<unsigned char> msg(calculate_size(RequestType::TradeCapture));
     auto * p = add_request_header(&msg[0], msg.size() - 2, RequestType::TradeCapture, seq_no);
     p = encode_text(p, trade_report_id, 20);
@@ -146,28 +142,16 @@ std::vector<unsigned char> create_trade_capture_report_request(
     p = encode_price(p, price);
     p = encode(p, static_cast<uint8_t>(trade_capture_bitfield_num()));
     p = encode(p, static_cast<uint8_t>(2));
-    p = encode_text(p, party_id, 4);
     p = encode_char(p, convert_side(side));
     p = encode_char(p, convert_capacity(capacity));
-    p = encode_text(p, contra_party_id, 4);
+    p = encode_text(p, party_id, 4);
+    p = encode_char(p, '2');
+    p = encode_char(p, convert_side(side));
     p = encode_char(p, convert_capacity(contra_capacity));
-//    p = encode_char(p, "TEST");
-//    p =
+    p = encode_text(p, contra_party_id, 4);
+    p = encode_char(p, '3');
     encode_trade_capture_opt_fields(p,
             symbol,
-            deferred_publication);
+            deferred_publication ? '2' : '1');
     return msg;
-    return std::vector<unsigned char>(
-        sizeof(seq_no) +
-            sizeof(trade_report_id) +
-            sizeof(volume) +
-            sizeof(price) +
-            sizeof(party_id) +
-            sizeof(side) +
-            sizeof(capacity) +
-            sizeof(contra_party_id) +
-            sizeof(contra_capacity) +
-            sizeof(symbol) +
-            sizeof(deferred_publication)
-    );
 }

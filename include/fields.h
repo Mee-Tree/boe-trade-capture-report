@@ -9,6 +9,7 @@
  *  Account : Text(16)
  *  Capacity : Alpha(1)
  *  ClOrdID : Text(20)
+ *  TrdRepID: Text(20)
  *  MaxFloor : Binary(4)
  *  OrderQty : Binary(4)
  *  OrdType : Alphanum(1)
