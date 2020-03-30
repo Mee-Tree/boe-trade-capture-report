@@ -37,7 +37,6 @@ constexpr size_t new_order_opt_fields_size()
  * TradeCapture
  *  Symbol(1,1)
  *  Capacity(2,1)
- *  Account(2,2)
  *  PartyRole(2,16)
  *  TradePublishIndicator(3,32)
  */
@@ -55,7 +54,10 @@ constexpr size_t trade_capture_opt_fields_size()
     return 0
 #define FIELD(name, _, __) + name##_field_size
 #include "trade_capture_opt_fields.inl"
-        ;
+        + 2 * (0
+#define FIELD(name, _, __) + name##_field_size
+#include "trade_capture_group_opt_fields.inl"
+        );
 }
 
 enum class RequestType {
@@ -69,7 +71,9 @@ constexpr size_t calculate_size(const RequestType type)
         case RequestType::New:
             return 36 + new_order_bitfield_num() + new_order_opt_fields_size();
         case RequestType::TradeCapture:
-            return 58 + trade_capture_bitfield_num() + trade_capture_opt_fields_size();
+            return 54
+                + trade_capture_bitfield_num()
+                + trade_capture_opt_fields_size();
     }
     return 0;
 }
