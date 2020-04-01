@@ -35,7 +35,7 @@ inline unsigned char * encode_binary4(unsigned char * start, const uint32_t valu
 
 inline unsigned char * encode_price(unsigned char * start, const double value, const double order = 10000)
 {
-    const double epsilon = 1e-5;
+    const double epsilon = 0.1 / order;
     // beware: no precision loss check
     return encode(start, static_cast<int64_t>(value * order + std::copysign(epsilon, value)));
 }
