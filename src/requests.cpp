@@ -173,7 +173,7 @@ std::vector<unsigned char> create_trade_capture_report_request(
     for (auto i = 0; i < no_sides; ++i) {
         p = encode_char(p, convert_side(sides[i])); // mandatory
         p += capacity_field_size;
-        p = encode_text(p, party_ids[i], party_id_field_size); // mandatory
+        p = encode_field_party_id(p, party_ids[i]); // mandatory
         p = encode_trade_capture_group_opt_fields(bitfield_start, p,
               convert_capacity(capacities[i]),
               party_roles[i]
