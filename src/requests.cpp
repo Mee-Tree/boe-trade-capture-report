@@ -35,7 +35,7 @@ unsigned char * encode_trade_capture_group_opt_fields(unsigned char * bitfield_s
 {
 #define FIELD(name, bitfield_num, bit) \
     set_opt_field_bit(bitfield_start, bitfield_num, bit); \
-    if (name == capacity) {\
+    if (&name == &capacity) {\
         p -= capacity_field_size + party_id_field_size;\
         p = encode_field_capacity(p, name) + party_id_field_size;\
     } else p = encode_field_##name(p, name);
