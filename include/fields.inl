@@ -11,7 +11,10 @@ FIELD(ord_type, char, char)
 FIELD(price, price, double)
 FIELD(side, char, char)
 VAR_FIELD(symbol, 8)
+FIELD(party_role, char, char)
+VAR_FIELD(party_id, 4)
 FIELD(time_in_force, char, char)
+FIELD(trade_publish_ind, char, char)
 
 #undef FIELD
 #undef VAR_FIELD

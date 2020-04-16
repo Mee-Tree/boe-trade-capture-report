@@ -18,11 +18,38 @@ void encode_new_order_opt_fields(unsigned char * bitfield_start,
 #include "new_order_opt_fields.inl"
 }
 
+
+void encode_trade_capture_opt_fields(unsigned char * bitfield_start, unsigned char * p,
+        const std::string & symbol,
+        const char trade_publish_ind)
+{
+#define FIELD(name, bitfield_num, bit) \
+    set_opt_field_bit(bitfield_start, bitfield_num, bit); \
+    p = encode_field_##name(p, name);
+#include "trade_capture_opt_fields.inl"
+}
+
+unsigned char * encode_trade_capture_group_opt_fields(unsigned char * bitfield_start, unsigned char * p,
+        const char capacity,
+        const char party_role)
+{
+#define FIELD(name, bitfield_num, bit) \
+    set_opt_field_bit(bitfield_start, bitfield_num, bit); \
+    if (&name == &capacity) {\
+        p -= capacity_field_size + party_id_field_size;\
+        p = encode_field_capacity(p, name) + party_id_field_size;\
+    } else p = encode_field_##name(p, name);
+#include "trade_capture_group_opt_fields.inl"
+    return p;
+}
+
 uint8_t encode_request_type(const RequestType type)
 {
     switch (type) {
         case RequestType::New:
             return 0x38;
+        case RequestType::TradeCapture:
+            return 0x3C;
     }
     return 0;
 }
@@ -122,17 +149,40 @@ std::vector<unsigned char> create_trade_capture_report_request(
         const std::string & symbol,
         bool deferred_publication)
 {
-    return std::vector<unsigned char>(
-        sizeof(seq_no) +
-            sizeof(trade_report_id) +
-            sizeof(volume) +
-            sizeof(price) +
-            sizeof(party_id) +
-            sizeof(side) +
-            sizeof(capacity) +
-            sizeof(contra_party_id) +
-            sizeof(contra_capacity) +
-            sizeof(symbol) +
-            sizeof(deferred_publication)
-    );
+    std::vector<unsigned char> msg(calculate_size(RequestType::TradeCapture));
+    auto * p = add_request_header(&msg[0], msg.size() - 2, RequestType::TradeCapture, seq_no);
+    
+    p = encode_text(p, trade_report_id, 20);
+    p = encode_binary4(p, static_cast<uint32_t>(volume));
+    p = encode_trade_price(p, price);
+    p = encode(p, static_cast<uint8_t>(trade_capture_bitfield_num()));
+    
+    auto * bitfield_start = p;
+    p += trade_capture_bitfield_num();
+    
+    uint8_t no_sides = 2;
+    p = encode(p, no_sides);
+
+    Side contra_side = side == Side::Buy ? Side::Sell : Side::Buy;
+
+    char party_roles[] = {'2', '3'};
+    Side sides[] = {side, contra_side};
+    Capacity capacities[] = {capacity, contra_capacity};
+    std::string party_ids[] = {party_id, contra_party_id};
+
+    for (auto i = 0; i < no_sides; ++i) {
+        p = encode_char(p, convert_side(sides[i])); // mandatory
+        p += capacity_field_size;
+        p = encode_field_party_id(p, party_ids[i]); // mandatory
+        p = encode_trade_capture_group_opt_fields(bitfield_start, p,
+              convert_capacity(capacities[i]),
+              party_roles[i]
+        );
+    }
+
+    char trade_publish_ind = static_cast<char>(deferred_publication + 1);
+    encode_trade_capture_opt_fields(bitfield_start, p,
+        symbol,
+        trade_publish_ind);
+    return msg;
 }
