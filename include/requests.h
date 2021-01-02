@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <array>
 #include <vector>
+#include <cstring>
 
 /*
  * New Order
